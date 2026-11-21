@@ -1,0 +1,40 @@
+{
+  "id": "parus-minor",
+  "nameKo": "박새",
+  "nameEn": "Japanese Tit",
+  "scientificName": "Parus minor",
+  "info": {
+    "features": "",
+    "diet": "",
+    "habitat": "",
+    "taxonomy": "참새목 박새과"
+  },
+  "media": {
+    "photos": [],
+    "audio": null,
+    "habitatPhoto": null
+  },
+  "habitatRegions": [
+    {
+      "code": "KR",
+      "name": "대한민국",
+      "description": ""
+    },
+    {
+      "code": "JP",
+      "name": "일본",
+      "description": ""
+    },
+    {
+      "code": "CN",
+      "name": "중국",
+      "description": ""
+    }
+  ],
+  "sources": {
+    "birdInfo": [],
+    "birdPhotos": [],
+    "habitatPhoto": [],
+    "audio": []
+  }
+}

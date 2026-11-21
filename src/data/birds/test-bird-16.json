@@ -1,0 +1,24 @@
+{
+  "id": "test-bird-16",
+  "nameKo": "테스트 새 16",
+  "nameEn": "Test Bird 16",
+  "scientificName": "Testus avis 16",
+  "info": {
+    "features": "",
+    "diet": "",
+    "habitat": "",
+    "taxonomy": ""
+  },
+  "media": {
+    "photos": [],
+    "audio": null,
+    "habitatPhoto": null
+  },
+  "habitatRegions": [],
+  "sources": {
+    "birdInfo": [],
+    "birdPhotos": [],
+    "habitatPhoto": [],
+    "audio": []
+  }
+}

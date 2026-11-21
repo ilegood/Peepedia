@@ -1,0 +1,130 @@
+@import 'tailwindcss';
+
+/* 다크 테마는 <html data-theme="dark"> 로 제어한다. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/* ------------------------------------------------------------
+ * 디자인 토큰
+ * 밝은 테마와 어두운 테마를 별도 팔레트로 정의한다(단순 반전 아님).
+ * ---------------------------------------------------------- */
+:root {
+  color-scheme: light;
+  --pp-bg: #faf6ec; /* 메인 배경: 아이보리 */
+  --pp-surface: #fffdf6; /* 카드 배경: 따뜻한 화이트 */
+  --pp-sage: #e3eadb; /* 보조 배경: 연한 세이지 */
+  --pp-sage-strong: #a8c09e; /* 로고 원, 일러스트 원 */
+  --pp-footer: #ede6d3;
+  --pp-primary: #2f5d3a; /* 포레스트 그린 */
+  --pp-on-primary: #ffffff;
+  --pp-heading: #2f5d3a;
+  --pp-text: #2b2f2a;
+  --pp-muted: #5f655c;
+  --pp-border: #ece5d3;
+  --pp-neutral: #ecece6; /* 출처 아코디언 등 중립 배경 */
+  --pp-overlay: rgb(30 31 28 / 0.55);
+  --pp-shadow: 0 6px 20px -10px rgb(60 52 30 / 0.22);
+  --pp-shadow-sm: 0 2px 8px -4px rgb(60 52 30 / 0.18);
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+  --pp-bg: #1e1f21; /* 차콜 */
+  --pp-surface: #2a2b2e; /* 어두운 회색 카드 */
+  --pp-sage: #2f3a31;
+  --pp-sage-strong: #5f7f58;
+  --pp-footer: #252628;
+  --pp-primary: #a8cf9e; /* 밝은 세이지 그린 */
+  --pp-on-primary: #1e2a20;
+  --pp-heading: #a8cf9e;
+  --pp-text: #e8e6df; /* 연한 아이보리 */
+  --pp-muted: #a9aaa4;
+  --pp-border: #3a3b3f;
+  --pp-neutral: #2f3033;
+  --pp-overlay: rgb(0 0 0 / 0.6);
+  --pp-shadow: 0 6px 20px -10px rgb(0 0 0 / 0.6);
+  --pp-shadow-sm: 0 2px 8px -4px rgb(0 0 0 / 0.5);
+}
+
+@theme inline {
+  --color-bg: var(--pp-bg);
+  --color-surface: var(--pp-surface);
+  --color-sage: var(--pp-sage);
+  --color-sage-strong: var(--pp-sage-strong);
+  --color-footer: var(--pp-footer);
+  --color-primary: var(--pp-primary);
+  --color-on-primary: var(--pp-on-primary);
+  --color-heading: var(--pp-heading);
+  --color-text: var(--pp-text);
+  --color-muted: var(--pp-muted);
+  --color-line: var(--pp-border);
+  --color-neutral: var(--pp-neutral);
+  --color-overlay: var(--pp-overlay);
+
+  --shadow-card: var(--pp-shadow);
+  --shadow-soft: var(--pp-shadow-sm);
+
+  --font-sans: 'Noto Sans KR Variable', system-ui, -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  --font-serif: 'Noto Serif KR Variable', 'Apple SD Gothic Neo', serif;
+
+  --radius-card: 1.25rem;
+}
+
+/* ------------------------------------------------------------
+ * 기본 스타일
+ * ---------------------------------------------------------- */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: auto;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    background-color: var(--pp-bg);
+    color: var(--pp-text);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    word-break: keep-all; /* 한국어 단어 중간 줄바꿈 방지 */
+    overflow-wrap: anywhere;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    transition:
+      background-color 0.25s ease,
+      color 0.25s ease;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--pp-primary);
+    outline-offset: 2px;
+  }
+
+  button {
+    cursor: pointer;
+  }
+}
+
+/* 페이지 전환: 짧고 부드러운 페이드 */
+@keyframes pp-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.pp-page-fade {
+  animation: pp-fade-in 0.28s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
