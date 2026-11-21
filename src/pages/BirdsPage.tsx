@@ -58,17 +58,24 @@ export function BirdsPage() {
 
   // 상세 페이지에서 돌아왔을 때 스크롤 위치 복원
   useEffect(() => {
+    let timer: number | undefined;
     try {
       const saved = sessionStorage.getItem(SCROLL_KEY);
       if (!saved) return;
       const parsed = JSON.parse(saved) as { search: string; y: number };
-      sessionStorage.removeItem(SCROLL_KEY);
       if (parsed.search === searchParams.toString() && typeof parsed.y === 'number') {
-        requestAnimationFrame(() => window.scrollTo(0, parsed.y));
+        sessionStorage.removeItem(SCROLL_KEY);
+        // React Router ScrollRestoration 보다 뒤에서 확실히 복원한다.
+        timer = window.setTimeout(() => {
+          requestAnimationFrame(() => window.scrollTo(0, parsed.y));
+        }, 40);
       }
     } catch {
       /* ignore */
     }
+    return () => {
+      if (timer !== undefined) window.clearTimeout(timer);
+    };
   }, [searchParams]);
 
   const updateParams = (next: { q?: string; sort?: SortKey; page?: number }) => {
