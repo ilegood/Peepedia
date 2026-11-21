@@ -1,9 +1,11 @@
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { FavoriteButton } from '../components/common/FavoriteButton';
 import { Container } from '../components/common/Page';
 import { BirdAudioPlayer } from '../components/detail/BirdAudioPlayer';
 import { HabitatSection } from '../components/detail/HabitatSection';
 import { InfoCardGrid } from '../components/detail/InfoCardGrid';
+import { LightboxModal } from '../components/detail/LightboxModal';
 import { PhotoGallery } from '../components/detail/PhotoGallery';
 import { PrevNextNav } from '../components/detail/PrevNextNav';
 import { SourcesAccordion } from '../components/detail/SourcesAccordion';
@@ -13,12 +15,12 @@ import { useFavorites } from '../hooks/useFavorites';
 import { NotFoundPage } from './NotFoundPage';
 
 /**
- * BIRD DETAIL (PDF p.4, p.5, p.9, p.18, p.19 기준)
- * - 사진 갤러리 (1~5장, 3:2)
+ * BIRD DETAIL (PDF p.4, p.5, p.9, p.18, p.19, p.20, p.21 기준)
+ * - 사진 갤러리 (1~5장, 3:2) + 클릭 시 라이트박스 확대
  * - 새 이름 (한국어 → 영어 → 학명 이탤릭) + 즐겨찾기 하트
  * - 울음소리 플레이어
  * - 기본 정보 카드 (특징 → 먹이 → 서식지 → 분류)
- * - 서식지 (풍경 사진 + 국가명 + 지도 영역)
+ * - 서식지 (풍경 사진 + 국가명 + 평면 세계지도)
  * - 이전 새 / 다음 새
  * - 접이식 출처
  */
@@ -26,8 +28,14 @@ export function BirdDetailPage() {
   const { id } = useParams();
   const bird = getBirdById(id);
   const { isFavorite, toggle } = useFavorites();
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   useDocumentTitle(bird?.nameKo || undefined);
+
+  // 다른 새 페이지로 이동하면 라이트박스를 닫는다.
+  useEffect(() => {
+    setLightboxIndex(null);
+  }, [id]);
 
   if (!bird) return <NotFoundPage />;
 
@@ -38,7 +46,12 @@ export function BirdDetailPage() {
     <Container narrow>
       <div className="pt-8 pb-20 md:pt-10">
         {/* 사진 갤러리 */}
-        <PhotoGallery key={bird.id} photos={bird.media.photos} birdName={displayName} />
+        <PhotoGallery
+          key={bird.id}
+          photos={bird.media.photos}
+          birdName={displayName}
+          onOpenLightbox={(idx) => setLightboxIndex(idx)}
+        />
 
         {/* 새 이름 + 즐겨찾기 하트 */}
         <div className="mt-6 flex items-start justify-between gap-4">
@@ -81,6 +94,16 @@ export function BirdDetailPage() {
         {/* 출처 */}
         <SourcesAccordion key={`src-${bird.id}`} sources={bird.sources} />
       </div>
+
+      {/* 사진 확대 라이트박스 */}
+      <LightboxModal
+        open={lightboxIndex !== null}
+        photos={bird.media.photos}
+        index={lightboxIndex ?? 0}
+        birdName={displayName}
+        onIndexChange={setLightboxIndex}
+        onClose={() => setLightboxIndex(null)}
+      />
     </Container>
   );
 }
